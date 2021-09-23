@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script   src="https://code.jquery.com/jquery-3.6.0.min.js"   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="   crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Create your WS</title>
+    <style>
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+    }
+    h1.h1config {
+      text-align: center;
+      font-family: arial, sans-serif;
+    }
+    .centertitle{
+      text-align: center;
+      font-family: arial, sans-serif;
+      color: #999999;
+    }
+
+    .buttonsubmit {
+      background-color: #446ab1;
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin-top: 19px;
+      margin-bottom: 19px;
+      }
+
+      .successMessage {
+        background-color: #55bcbb;
+        border: none;
+        font-family: arial, sans-serif;
+
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        line-height:29px;
+        }
+
+    .input{
+      width: 350px;
+      height: 25px;
+    }
+    .centerdiv{
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+<h1 class="h1config">Create your simulate data for weather station temperature</h1>
+<form  class="wrapper" onsubmit="return false;">
+
+    <h3 class="centertitle">Weather station temperature</h3>
+
+      <div class="centertitle"><input id="inputtemp" class="input" type="number" step="0.00000000001" name="temp"  value="" required></div>
+    <div class="centertitle"><input id="buttonsub" class="buttonsubmit" type="submit" value="Create simulate data" onclick="$('#loading').show();" ></div>
+</form>
+<div class="centerdiv">
+<div id="loading" style="display: none"><img src="/static/ajax-loader.gif" alt="" /></div>
+<div id="msg" style="text-align:center" class="successMessage"> {{success}} </div>
+</div>
+</div>
+</body>
+<script>
+   $(document).ready(function(){
+
+     $('.wrapper').on('click', '#buttonsub', function(){
+       $('#loading').show()
+       $('#msg').hide()
+        var temp = $("#inputtemp").val();
+        $.ajax({
+         url: "/createws",
+         type: "get",
+         data: {name: name ,temp:temp},
+         success: function(response) {
+           $('#loading').hide()
+           $('#msg').show()
+           $("#msg").html('<p>'+response.result.toString()+'</p>');
+         },
+         error: function(response) {
+           $('#loading').hide()
+           $("#msg").html('<p>'+response.result.toString()+'</p>');
+         }
+        });
+     });
+   });
+
+</script>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <title>Choose your WS</title>
+    <style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+
+    body { margin: 0; padding: 0; }
+
+    .mapboxgl-map{
+      width: 625px;
+      height: 400px;
+      text-align: center;
+      font-family: arial, sans-serif;
+      color: #999999;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .coordinates {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    bottom: 40px;
+    left: 10px;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    display: none;
+    }
+
+    .geocoder {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      }
+      .mapboxgl-ctrl-geocoder {
+      min-width: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      }
+      #map {
+      margin-top: 25px;
+      }
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+    }
+    h1.h1config {
+      text-align: center;
+      font-family: arial, sans-serif;
+    }
+    .centertitle{
+      text-align: center;
+      font-family: arial, sans-serif;
+      color: #999999;
+    }
+    .buttonsubmit {
+      background-color: #446ab1;
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin-top: 19px;
+      margin-bottom: 19px;
+      }
+
+      .successMessage {
+        background-color: #55bcbb;
+        border: none;
+        font-family: arial, sans-serif;
+
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        line-height:29px;
+        }
+
+    .input{
+      width: 350px;
+      height: 25px;
+    }
+    .centerdiv{
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+<h1 class="h1config">Select an address to locate nearby weather stations</h1>
+<h6 class="centertitle">This weather station information was brought to you by <a href="https://www.wunderground.com">Weather Underground</a>  </h1>
+<form class="wrapper"  onsubmit="return false;">
+  <div id="geocoder" class="geocoder"></div>
+  <div id="map" ></div>
+
+
+    <div class="centertitle"><input id="buttonsub" class="buttonsubmit" type="submit" value="Retrieve nearby weather stations"></div>
+</form>
+<div class="centerdiv">
+<div id="loading" style="display: none"><img src="/static/ajax-loader.gif" alt="" /></div>
+<div id="msg" style="text-align:center" class="successMessage"> {{success}} </div>
+</div>
+</body>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+<script>
+var gpscoordenates = []
+
+  mapboxgl.accessToken = "{{mapboxkey}}";
+  const coordinates = document.getElementById('coordinates');
+  const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [ 4.361760043606961,50.842560521146034],
+  zoom: 2
+  });
+
+  const marker = new mapboxgl.Marker({
+  draggable: true
+  })
+  .setLngLat([4.361760043606961,50.842560521146034])
+  .addTo(map);
+  gpscoordenates = []
+  gpscoordenates.push(4.361760043606961)
+  gpscoordenates.push(50.842560521146034)
+
+  function onDragEnd() {
+  geocoder.clear();
+  const lngLat = marker.getLngLat();
+  gpscoordenates = []
+  gpscoordenates.push(lngLat.lng)
+  gpscoordenates.push(lngLat.lat)
+  }
+
+  marker.on('dragend', onDragEnd);
+  map.on('click',function(event){
+      geocoder.clear();
+      var coordinates = event.lngLat;
+      marker.setLngLat({"lng": coordinates.lng, "lat" : coordinates.lat})
+      gpscoordenates = []
+      gpscoordenates.push(coordinates.lng)
+      gpscoordenates.push(coordinates.lat)
+  });
+
+  const geocoder = new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  marker: false,
+  mapboxgl: mapboxgl
+  });
+  document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+  geocoder.on('result', function(e) {
+    $('#msg').hide()
+    $('#map').show()
+    map.resize();
+    gpscoordenates=e.result.center
+    marker.setLngLat({"lng": gpscoordenates[0], "lat" : gpscoordenates[1]}).addTo(map)
+
+  })
+
+
+$(document).ready(function(){
+
+  $('.wrapper').on('click', '#buttonsub', function(){
+    $('#loading').show()
+    $('#msg').hide()
+     $.ajax({
+      url: "/getwuandcreatechart",
+      type: "get",
+      data: {lati: gpscoordenates[1],long:gpscoordenates[0] },
+      success: function(response) {
+        $('#loading').hide()
+        $('#msg').show()
+        $("#msg").html('<p>'+response.result.toString()+'</p>');
+      },
+      error: function(response) {
+        $('#loading').hide()
+        $("#msg").html('<p>'+response.result.toString()+'</p>');
+      }
+     });
+  });
+});
+
+</script>
+
+
+</html>

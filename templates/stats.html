@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Statistics</title>
+    <meta http-equiv="refresh" content="5">
+    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  border: 3px solid #ebebeb;
+
+  text-align: center;
+  padding: 8px;
+  background-color: #f1f2f2
+}
+
+td {
+  border: 3px solid #ebebeb;
+  text-align: center;
+  padding: 8px;
+}
+
+h2.h2center {
+  text-align: center;
+}
+
+h2.h2config {
+  text-align: center;
+  font-family: arial, sans-serif;
+}
+
+</style>
+  </head>
+  <body>
+<h2 class="h2config">Weather stations by anomaly score</h2>
+<table border="1">
+    <thead>
+        <tr>
+            {% for col in colnames %}
+            <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            {% for col in colnames %}
+<td>{{ record[col] }}</td>
+
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+  </body>
+</html>

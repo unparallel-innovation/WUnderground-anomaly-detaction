@@ -1,0 +1,277 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://quickchart.io",
+      "description": "",
+      "variables": {}
+    }
+  ],
+    "tags": [
+    {
+      "name": "QuickChart",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://quickchart.io/documentation/"
+      }
+    }
+  ],
+  "info": {
+    "version": "f1490ec5-9e10-4232-8787-209425945eec",
+    "title": "QuickChart Examples",
+    "description": "QuickChart is a service that generates images of charts from a URL. Because these charts are simple images, they are very easy to embed in non-dynamic environments such as email, SMS, chat rooms, and so on. <br> QuickChart works by taking Chart.js configurations and rendering them on the backend as an image. You may send your chart configuration in JSON or Javascript format using a simple URL or through POST request. To check the full documentation go to [here](https://quickchart.io/documentation/), because changing the chart configuration you will be able to make:<br> - Bar Graph<br>- Line Graph<br>- Radar Chart<br>- Pie Chart<br>- Doughnut Chart<br>- Polar Chart<br>- Scatter Plot<br>- Bubble Chart<br>- Radial Gauge / Meter Charts<br>- Box Plots and Violin Charts<br>- Sparklines<br>- Progress Bars<br>- Mixed Charts",
+    "termsOfService": "",
+    "contact": {"email":"support@quickchart.io"},
+    "license": {
+      "name": "AGPL-3.0 License"
+    }
+  },
+  "paths": {
+    "/chart": {
+      "get": {
+        "summary": "Simple chart",
+        "description": "A simple bar chart using a GET request.",
+        "tags":["QuickChart"],
+        "operationId": "Simplechart",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/chart"
+          },
+          {
+            "$ref": "#/components/parameters/backgroundColor"
+          },
+          {
+            "$ref": "#/components/parameters/width"
+          },
+          {
+            "$ref": "#/components/parameters/height"
+          },
+          {
+            "$ref": "#/components/parameters/devicePixelRatio"
+          },
+          {
+            "$ref": "#/components/parameters/format"
+          },
+          {
+            "$ref": "#/components/parameters/version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      },
+      "post": {
+        "summary": "Simple chart (POST)",
+        "description": "A simple bar chart using a POST request.",
+        "tags":["QuickChart"],
+        "operationId": "Simplechart(POST)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Content-Type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "description": "A simple bar chart using a POST request.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "backgroundColor": "#fff",
+                  "width": 500,
+                  "height": 300,
+                  "devicePixelRatio": 1,
+                  "chart": {
+                    "type": "bar",
+                    "data": {
+                      "labels": [
+                        2012,
+                        2013,
+                        2014,
+                        2015,
+                        2016
+                      ],
+                      "datasets": [
+                        {
+                          "label": "Users",
+                          "data": [
+                            120,
+                            60,
+                            50,
+                            180,
+                            120
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "example": "{\n  \"backgroundColor\": \"#fff\",\n  \"width\": 500,\n  \"height\": 300,\n  \"devicePixelRatio\": 1.0,\n  \"chart\": {\n    \"type\": \"bar\",\n    \"data\": {\n      \"labels\": [2012, 2013, 2014, 2015, 2016],\n      \"datasets\": [\n        {\n          \"label\": \"Users\",\n          \"data\": [120, 60, 50, 180, 120]\n        }\n      ]\n    }\n  }\n}"
+            }
+          }
+        }
+      }
+    },
+    "/chart/create": {
+      "post": {
+        "summary": "Create Short URL",
+        "description": "Generate a short URL that refers to this chart.",
+        "tags":["QuickChart"],
+        "operationId": "CreateShortURL",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "application/json"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "description": "Generate a short URL that refers to this chart.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "backgroundColor": "#fff",
+                  "width": 500,
+                  "height": 300,
+                  "devicePixelRatio": 1,
+                  "chart": {
+                    "type": "bar",
+                    "data": {
+                      "labels": [
+                        2012,
+                        2013,
+                        2014,
+                        2015,
+                        2016
+                      ],
+                      "datasets": [
+                        {
+                          "label": "Users",
+                          "data": [
+                            120,
+                            60,
+                            50,
+                            180,
+                            120
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "example": "{\n  \"backgroundColor\": \"#fff\",\n  \"width\": 500,\n  \"height\": 300,\n  \"devicePixelRatio\": 1.0,\n  \"chart\": {\n    \"type\": \"bar\",\n    \"data\": {\n      \"labels\": [2012, 2013, 2014, 2015, 2016],\n      \"datasets\": [\n        {\n          \"label\": \"Users\",\n          \"data\": [120, 60, 50, 180, 120]\n        }\n      ]\n    }\n  }\n}"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "chart": {
+        "name": "chart",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "example": "{\n  type: 'bar',\n  data: {\n    labels: ['Q1', 'Q2', 'Q3', 'Q4'],\n    datasets: [{\n      label: 'Revenue',\n      data: [100, 200, 300, 400]\n    }]\n  }\n}"
+        },
+        "description": "The Chart.js definition for this bar chart"
+      },
+      "backgroundColor": {
+        "name": "backgroundColor",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "example": "white"
+        }
+      },
+      "width": {
+        "name": "width",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "height": {
+        "name": "height",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "devicePixelRatio": {
+        "name": "devicePixelRatio",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "format": {
+        "name": "format",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "example": "png"
+        }
+      },
+      "version": {
+        "name": "version",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "string",
+          "example": "2.9.3"
+        }
+      },
+      "Content-Type": {
+        "name": "Content-Type",
+        "in": "header",
+        "required": true,
+        "style": "simple",
+        "schema": {
+          "type": "string",
+          "example": "application/json"
+        }
+      }
+    }
+  }
+}
