@@ -132,7 +132,7 @@ def createws():
 
         temp.append({'stationId':getRandomNames.getRandomName(),'temp':request.args.get("temp")})
         findAnomaliesAndCreateChart()
-        return jsonify({"result":"The dummy information was succefully created"})
+        return jsonify({"result":"The simulated information was succefully created"})
     except Exception as e:
         print(e)
         return jsonify({"result":"Some problem as occurred during the process"})
