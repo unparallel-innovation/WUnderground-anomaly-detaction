@@ -26,7 +26,7 @@ $ python3 identifyAnomFromWU.py WUKEY USERBIGML PASSWORDBIGML MAPBOXTOKEN
 # DOCKER
 ### Prerequisites
 Build and deploy the image to an external Docker registry(DockerRegistryUrl_identifyAnomFromWU). Please update the file according to the desired Docker registry URL.
-This image will do the same job of the identifyAnomFromWU script. 
+This image will do the same job of the identifyAnomFromWU script.
 
 ```
 $ chmod +x buildAndDeploy.sh
@@ -41,10 +41,10 @@ version: '3.1'
 
 services:
   detectAnomalies:
-    image: docker-hub.unparallel-server-1.ddns.net/smartclide/demo3:0.2
+    image: DockerRegistryUrl_identifyAnomFromWU
     ports:
       - "4500:4500"
-    environment: 
+    environment:
         - WUKEY=WUKEY
         - USERBIGML=USERBIGML
         - PASSBIGML=PASSWORDBIGML
