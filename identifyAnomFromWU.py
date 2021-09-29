@@ -117,7 +117,7 @@ def getwuandcreatechart():
         if(len(sys.argv)>1):
             getWSInfoByGPSFunction(sys.argv[1],request.args.get("lati"),request.args.get("long"))
         else:
-            getWSInfoByGPSFunction(os.getenv('WUKEY'),request.form['latitude'],request.form['longitude'])
+            getWSInfoByGPSFunction(os.getenv('WUKEY'),request.args.get("lati"),request.args.get("long"))
 
         return jsonify({"result":"The WS value was succefully added"})
     except Exception as e:
